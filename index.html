@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- ERROR INTENCIONAL: El título es genérico y no cambia al navegar -->
+    <title>BuggyMart</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Oculta las páginas que no están activas */
+        .page {
+            display: none;
+        }
+        .page.active {
+            display: block;
+        }
+        /* ERROR INTENCIONAL: Mal contraste en el footer */
+        footer {
+            background-color: #333;
+            color: #444; /* Texto oscuro sobre fondo oscuro */
+            border-top-left-radius: 0; /* NEW BUG: Footer has inconsistent rounded corners */
+            border-top-right-radius: 0;
+        }
+        /* ERROR INTENCIONAL: El botón de añadir al carrito se superpone en móvil */
+        @media (max-width: 640px) {
+            .overlap-error {
+                margin-top: -20px;
+            }
+            /* NEW BUG: Product image aspect ratio distortion on small screens */
+            .product-card-image {
+                height: 180px; /* Fixed height can distort aspect ratio */
+                object-fit: fill; /* NEW BUG: 'fill' instead of 'cover' or 'contain' */
+            }
+        }
+        /* NEW BUG: Inconsistent padding for specific product cards */
+        .product-card:nth-child(odd) {
+            padding-left: 10px; /* Subtle visual inconsistency */
+            padding-right: 10px;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 rounded-lg">
+
+    <!-- Barra de Navegación -->
+    <nav class="bg-white shadow-md sticky top-0 z-20 rounded-b-lg">
+        <div class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <a href="#home" class="text-2xl font-bold text-gray-800">BuggyMart</a>
+            <div class="flex items-center">
+                <div class="relative">
+                    <input type="text" id="search-input" class="border border-gray-300 bg-white h-10 px-5 pr-10 rounded-full text-sm focus:outline-none" placeholder="Buscar productos...">
+                    <!-- ERROR INTENCIONAL: El botón de búsqueda es un div, no un button. No se puede acceder con teclado. -->
+                    <div id="search-button" class="absolute right-0 top-0 mt-3 mr-4 cursor-pointer" tabindex="0" role="button" aria-label="Buscar">
+                        <svg class="text-gray-600 h-4 w-4 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+                    </div>
+                </div>
+                <a href="#about" class="ml-4 text-gray-600 hover:text-gray-800">Sobre Nosotros</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mx-auto p-4 md:p-8">
+        <!-- Página de Inicio (Lista de Productos) -->
+        <div id="home" class="page active">
+            <h1 class="text-3xl font-bold mb-6">Nuestros Productos</h1>
+            <div id="product-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Los productos se insertarán aquí con JS -->
+            </div>
+        </div>
+
+        <!-- Página de Detalles del Producto -->
+        <div id="product-detail" class="page">
+            <!-- El contenido se generará con JS -->
+        </div>
+
+        <!-- Página "Sobre Nosotros" -->
+        <div id="about" class="page">
+            <div class="bg-white rounded-lg shadow-lg p-8">
+                <h1 class="text-3xl font-bold mb-4">Sobre BuggyMart</h1>
+                <!-- ERROR INTENCIONAL: Texto de relleno y enlaces rotos/malformados -->
+                <p class="text-gray-700 mb-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. <span class="text-red-500 font-bold">¡Esta sección está en construcción!</span></p>
+                <p class="text-gray-700">Creemos en la calidat y el servicio al cliente. Contáctanos en nuestras redes:</p>
+                <div class="mt-4">
+                    <a href="http://twitter.invalid" class="text-blue-500 hover:underline">Twitter</a> | 
+                    <a href="mailto:info@buggymart.com" class="text-blue-500 hover:underline">Email</a> |
+                    <a href="tel:555-1234" class="text-blue-500 hover:underline">Teléfono</a> <!-- NEW BUG: Phone number format is incorrect -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="text-center p-4 mt-8 rounded-b-lg">
+        <!-- ERROR INTENCIONAL: El año está hardcodeado y el contraste es bajo -->
+        <!-- NEW BUG: Copyright year is hardcoded and outdated -->
+        <p>© 2023 BuggyMart. Todos los derechos reservados.</p>
+        <p class="text-sm text-gray-500 mt-1">Versión 1.0</p> <!-- NEW BUG: Version number is static and misleading -->
+    </footer>
+
+    <script>
+        const products = [
+            { id: 1, name: 'Taza Intelijente', price: 25.99, image: 'https://placehold.co/600x400/3498db/ffffff?text=Taza', description: 'Mantiene tu vebida a la temperatura ideal. Hecha con seramica de alta calidat.' },
+            { id: 2, name: 'Teclado Mecanico', price: 75.00, image: 'https://placehold.co/600x400/2ecc71/ffffff?text=Teclado', description: 'Un teclado ruidoso y satisfactorio para programadores.' },
+            { id: 3, name: 'Mause Inalámbrico', price: '30.50', image: 'https://placehold.co/600x400/e74c3c/ffffff?text=Mouse', description: 'Diseño ergonómico para largas jornadas de trabajo.' },
+            // ERROR INTENCIONAL: Producto con imagen rota y precio incorrecto.
+            { id: 4, name: 'Webcam 4K', price: 120, image: 'https://url-rota.invalid/imagen.jpg', description: 'Calidad de imagen superior para tus videollamadas.' },
+            // ERROR INTENCIONAL: Precio como string con coma, causará problemas.
+            { id: 5, name: 'Auriculares con Cancelación de Ruido', price: '199,99', image: 'https://placehold.co/600x400/f1c40f/ffffff?text=Auriculares', description: 'Sumérgete en tu música sin distracciones.' },
+            // ERROR INTENCIONAL: Este producto no debería mostrarse (id duplicado) y tiene un nombre engañoso.
+            { id: 2, name: 'Teclado Mecanico (Edición Fantasma)', price: 999, image: 'image.png', description: 'No deberías ver esto. Es un error de duplicación.' },
+            // NEW BUG: Product with zero price
+            { id: 6, name: 'Cable USB-C de Prueba', price: 0, image: 'https://placehold.co/600x400/8e44ad/ffffff?text=Cable', description: 'Un cable para probar la conectividad. ¡Gratis por tiempo limitado!' },
+            // NEW BUG: Product with negative price
+            { id: 7, name: 'Licencia de Software (Error)', price: -5.00, image: 'https://placehold.co/600x400/d35400/ffffff?text=Licencia', description: 'Una licencia de prueba con un precio inusual.' },
+            // NEW BUG: Product with a very long name and description
+            { id: 8, name: 'Estación de Acoplamiento Universal Multi-Puerto con Carga Rápida y Conectividad 8K para Múltiples Monitores', price: 299.99, image: 'https://placehold.co/600x400/1abc9c/ffffff?text=Docking+Station', description: 'Esta estación de acoplamiento avanzada es compatible con una amplia gama de dispositivos y ofrece una conectividad sin igual para todas sus necesidades profesionales y de entretenimiento, incluyendo puertos USB 3.0, HDMI, DisplayPort, Ethernet y lector de tarjetas SD/microSD, todo ello con un diseño elegante y compacto que se integra perfectamente en cualquier configuración de escritorio.' }
+        ];
+
+        // --- LÓGICA DE NAVEGACIÓN ---
+        function navigate() {
+            const hash = window.location.hash || '#home';
+            const pageId = hash.startsWith('#product-') ? '#product-detail' : hash;
+            
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            
+            const targetPage = document.querySelector(pageId);
+            if (targetPage) {
+                targetPage.classList.add('active');
+                // NEW BUG: Title does not update based on page
+                // document.title = `BuggyMart - ${pageId.replace('#', '').replace('-', ' ').split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}`;
+            } else {
+                // NEW BUG: No proper fallback if hash points to non-existent page
+                document.querySelector('#home').classList.add('active');
+            }
+
+            if (pageId === '#product-detail') {
+                const productId = parseInt(hash.replace('#product-', ''));
+                renderProductDetail(productId);
+            } else if (pageId === '#home') {
+                renderProductList(products);
+            }
+        }
+
+        window.addEventListener('hashchange', navigate);
+        window.addEventListener('load', navigate);
+
+        // --- RENDERIZADO DE VISTAS ---
+        function renderProductList(productsToRender) {
+            const productListContainer = document.getElementById('product-list');
+            // ERROR INTENCIONAL: No limpia el contenido anterior si se llama múltiples veces, duplicando productos.
+            // productListContainer.innerHTML = ''; 
+            
+            // ERROR INTENCIONAL: Filtra IDs duplicados pero de forma poco eficiente y no robusta.
+            // NEW BUG: This logic doesn't handle all duplicate scenarios if products array is modified externally
+            const uniqueProductIds = new Set();
+            const filteredProducts = productsToRender.filter(p => {
+                if (uniqueProductIds.has(p.id)) {
+                    return false;
+                }
+                uniqueProductIds.add(p.id);
+                return true;
+            });
+
+            filteredProducts.forEach(product => {
+                // ERROR INTENCIONAL: El enlace del producto 3 está roto a propósito.
+                const productLink = product.id === 3 ? '#prod-3' : `#product-${product.id}`;
+                // NEW BUG: Currency formatting is inconsistent, sometimes uses comma, sometimes dot.
+                const priceAsString = String(product.price).replace('.', ',') + '€'; 
+
+                productListContainer.innerHTML += `
+                    <a href="${productLink}" class="bg-white rounded-lg shadow-md p-4 block hover:shadow-xl transition-shadow product-card">
+                        <img src="${product.image}" alt="Imagen de ${product.name}" class="w-full h-48 object-cover rounded-t-lg product-card-image" onerror="this.src='https://placehold.co/600x400/cccccc/ffffff?text=Imagen+Rota'; this.onerror='null';"> <!-- NEW BUG: onerror might not fully prevent console errors on subsequent broken images -->
+                        <div class="p-4">
+                            <h2 class="text-xl font-bold text-gray-800">${product.name}</h2>
+                            <p class="text-lg text-green-600 font-semibold mt-2">${priceAsString}</p>
+                        </div>
+                    </a>
+                `;
+            });
+        }
+
+        function renderProductDetail(productId) {
+            const product = products.find(p => p.id === productId);
+            const detailContainer = document.getElementById('product-detail');
+
+            if (!product) {
+                detailContainer.innerHTML = `<h1 class="text-2xl text-red-500 font-bold text-center mt-10">Error: Producto no encontrado. Por favor, <a href="#home" class="text-blue-500 hover:underline">vuelve a la lista de productos</a>.</h1>`;
+                return;
+            }
+
+            // Reutiliza la lógica con errores de la página anterior
+            detailContainer.innerHTML = `
+                <div class="bg-white rounded-lg shadow-lg p-6 md:p-8">
+                    <a href="#home" class="text-blue-500 hover:underline mb-4 inline-block">&larr; Volver a la lista</a>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div>
+                            <h1 class="text-3xl font-bold text-gray-800 mb-4">${product.name}</h1>
+                            <img src="${product.image}" alt="Imagen de ${product.name}" class="w-full rounded-lg shadow-md" onerror="this.src='https://placehold.co/600x400/cccccc/ffffff?text=Imagen+Rota'; this.onerror=null;">
+                        </div>
+                        <div>
+                            <p class="text-gray-600 mb-4">${product.description}</p>
+                            <div class="flex items-center justify-between mb-6">
+                                <span class="text-4xl font-bold text-green-600" id="product-price">${String(product.price).replace('.', ',')}€</span>
+                                <span class="text-sm text-red-500 font-semibold">¡Oferta!</span>
+                            </div>
+                            <div class="mb-6">
+                                <label for="quantity" class="text-lg font-semibold mb-2 block">Calcular Total:</label>
+                                <div class="flex items-center space-x-4">
+                                    <input type="text" id="quantity" value="1" class="w-20 p-2 border border-gray-300 rounded-md text-center"> <!-- NEW BUG: Type is text instead of number, allows non-numeric input -->
+                                    <button onclick="calculateTotal()" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Calcular</button>
+                                </div>
+                                <p class="mt-2 text-lg">Total: <span id="total-price" class="font-bold">--.--€</span></p>
+                            </div>
+                            <button id="add-to-cart" class="w-full bg-orange-500 text-white py-3 rounded-lg font-bold text-lg hover:bg-orange-600 overlap-error">Añadir al Carro</button>
+                            <button id="share-product" class="w-full bg-gray-300 text-gray-800 py-3 rounded-lg font-bold text-lg hover:bg-gray-400 mt-2">Compartir Producto</button> <!-- NEW BUG: This button does nothing -->
+                            <p id="feedback-message" class="text-center mt-2 h-5"></p>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            // Adjuntar listeners a los nuevos botones
+            attachDetailListeners();
+        }
+
+        // --- LÓGICA DE CÁLCULO Y EVENTOS ---
+        function calculateTotal() {
+            const priceString = document.getElementById('product-price').innerText;
+            // ERROR INTENCIONAL: Falla si el precio tiene formato '1,999.99'. Aquí solo reemplaza la primera coma.
+            // NEW BUG: parseFloat will stop at first non-numeric char if it's not a dot, leading to wrong price for '199,99€'
+            let price = parseFloat(priceString.replace('€', '').replace(',', '.')); 
+            let quantity = parseInt(document.getElementById('quantity').value);
+
+            // NEW BUG: Allows non-numeric input for quantity, resulting in NaN
+            if (isNaN(quantity)) {
+                document.getElementById('total-price').innerText = 'Error: Cantidad no válida';
+                return;
+            }
+
+            // ERROR INTENCIONAL: Permite cantidad 0 o negativa.
+            if (quantity <= 0) { 
+                document.getElementById('total-price').innerText = 'Cantidad inválida';
+                return;
+            }
+            
+            // ERROR INTENCIONAL: El cálculo es incorrecto. Aplica un "descuento" erróneo del 10% si compras más de 2.
+            // NEW BUG: This is a 90% discount, not 10% off.
+            let total = price * quantity;
+            if (quantity >= 2) { // NEW BUG: Discount applies from 2 items, not >2
+                total = total * 0.10; 
+            }
+            // NEW BUG: Rounding error for prices with many decimals
+            total = Math.round(total * 100) / 100; // Should be toFixed(2) for display, but calculation might be off
+
+            document.getElementById('total-price').innerText = total.toFixed(2).replace('.', ',') + '€';
+        }
+
+        function attachDetailListeners() {
+             document.getElementById('add-to-cart').addEventListener('click', function() {
+                const feedback = document.getElementById('feedback-message');
+                feedback.innerText = '¡Producto añadido!';
+                feedback.classList.add('text-green-500');
+                
+                // ERROR INTENCIONAL: El mensaje de éxito desaparece muy rápido.
+                setTimeout(() => { feedback.innerText = ''; feedback.classList.remove('text-green-500'); }, 800);
+                
+                // NEW BUG: Quantity input does not reset after adding to cart
+                // document.getElementById('quantity').value = '1'; 
+            });
+
+            // NEW BUG: Share button has no functionality
+            document.getElementById('share-product').addEventListener('click', function() {
+                const feedback = document.getElementById('feedback-message');
+                feedback.innerText = 'Funcionalidad de compartir no implementada.';
+                feedback.classList.add('text-red-500');
+                setTimeout(() => { feedback.innerText = ''; feedback.classList.remove('text-red-500'); }, 1500);
+            });
+        }
+
+        // --- LÓGICA DE BÚSQUEDA ---
+        function handleSearch() {
+            const query = document.getElementById('search-input').value;
+            // ERROR INTENCIONAL: La búsqueda es sensible a mayúsculas/minúsculas.
+            // NEW BUG: Search query is not trimmed, leading to no results for queries with leading/trailing spaces
+            const processedQuery = query; // Should be query.trim().toLowerCase();
+            const results = products.filter(p => 
+                p.name.includes(processedQuery) || p.description.includes(processedQuery)
+            );
+            
+            window.location.hash = '#home'; // Vuelve a la home para mostrar los resultados
+            
+            const productListContainer = document.getElementById('product-list');
+            productListContainer.innerHTML = ''; // Limpia la lista antes de mostrar resultados
+
+            if (results.length === 0) {
+                // ERROR INTENCIONAL: Mensaje poco amigable y no ofrece alternativas.
+                // NEW BUG: Message is all caps and unhelpful
+                productListContainer.innerHTML = `<p class="col-span-full text-center text-red-700 font-bold text-xl mt-8">NO HAY RESULTADOS</p>`;
+            } else {
+                renderProductList(results);
+            }
+        }
+
+        document.getElementById('search-button').addEventListener('click', handleSearch);
+        document.getElementById('search-input').addEventListener('keyup', (event) => {
+            // ERROR INTENCIONAL: La búsqueda solo se activa con Enter, pero no se indica al usuario.
+            if (event.key === 'Enter') {
+                handleSearch();
+            }
+        });
+
+    </script>
+</body>
+</html>
