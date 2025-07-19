@@ -1,13 +1,14 @@
 <!DOCTYPE html>
+
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- ERROR INTENCIONAL: El título es genérico y no cambia al navegar -->
-    <title>BuggyMart</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<!-- ERROR INTENCIONAL: El título es genérico y no cambia al navegar -->
+<title>BuggyMart</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<style>
         body {
             font-family: 'Inter', sans-serif;
         }
@@ -44,62 +45,68 @@
     </style>
 </head>
 <body class="bg-gray-100 rounded-lg">
-
-    <!-- Barra de Navegación -->
-    <nav class="bg-white shadow-md sticky top-0 z-20 rounded-b-lg">
-        <div class="container mx-auto px-6 py-3 flex justify-between items-center">
-            <a href="#home" class="text-2xl font-bold text-gray-800">BuggyMart</a>
-            <div class="flex items-center">
-                <div class="relative">
-                    <input type="text" id="search-input" class="border border-gray-300 bg-white h-10 px-5 pr-10 rounded-full text-sm focus:outline-none" placeholder="Buscar productos...">
-                    <!-- ERROR INTENCIONAL: El botón de búsqueda es un div, no un button. No se puede acceder con teclado. -->
-                    <div id="search-button" class="absolute right-0 top-0 mt-3 mr-4 cursor-pointer" tabindex="0" role="button" aria-label="Buscar">
-                        <svg class="text-gray-600 h-4 w-4 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
-                    </div>
-                </div>
-                <a href="#about" class="ml-4 text-gray-600 hover:text-gray-800">Sobre Nosotros</a>
-            </div>
-        </div>
-    </nav>
-
-    <main class="container mx-auto p-4 md:p-8">
-        <!-- Página de Inicio (Lista de Productos) -->
-        <div id="home" class="page active">
-            <h1 class="text-3xl font-bold mb-6">Nuestros Productos</h1>
-            <div id="product-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Los productos se insertarán aquí con JS -->
-            </div>
-        </div>
-
-        <!-- Página de Detalles del Producto -->
-        <div id="product-detail" class="page">
-            <!-- El contenido se generará con JS -->
-        </div>
-
-        <!-- Página "Sobre Nosotros" -->
-        <div id="about" class="page">
-            <div class="bg-white rounded-lg shadow-lg p-8">
-                <h1 class="text-3xl font-bold mb-4">Sobre BuggyMart</h1>
-                <!-- ERROR INTENCIONAL: Texto de relleno y enlaces rotos/malformados -->
-                <p class="text-gray-700 mb-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. <span class="text-red-500 font-bold">¡Esta sección está en construcción!</span></p>
-                <p class="text-gray-700">Creemos en la calidad y el servicio al cliente. Contáctanos en nuestras redes:</p>
-                <div class="mt-4">
-                    <a href="http://twitter.invalid" class="text-blue-500 hover:underline">Twitter</a> | 
-                    <a href="mailto:info@buggymart.com" class="text-blue-500 hover:underline">Email</a> |
-                    <a href="tel:555-1234" class="text-blue-500 hover:underline">Teléfono</a> <!-- NEW BUG: Phone number format is incorrect -->
-                </div>
-            </div>
-        </div>
-    </main>
-
-    <footer class="text-center p-4 mt-8 rounded-b-lg">
-        <!-- ERROR INTENCIONAL: El año está hardcodeado y el contraste es bajo -->
-        <!-- NEW BUG: Copyright year is hardcoded and outdated -->
-        <p>© 2023 BuggyMart. Todos los derechos reservados.</p>
-        <p class="text-sm text-gray-500 mt-1">Versión 1.0</p> <!-- NEW BUG: Version number is static and misleading -->
-    </footer>
-
-    <script>
+<!-- Barra de Navegación -->
+<nav class="bg-white shadow-md sticky top-0 z-20 rounded-b-lg">
+<div class="container mx-auto px-6 py-3 flex justify-between items-center">
+<a class="text-2xl font-bold text-gray-800" href="#home">BuggyMart</a>
+<div class="flex items-center">
+<div class="relative">
+<input class="border border-gray-300 bg-white h-10 px-5 pr-10 rounded-full text-sm focus:outline-none" id="search-input" placeholder="Buscar productos..." type="text"/>
+<!-- ERROR INTENCIONAL: El botón de búsqueda es un div, no un button. No se puede acceder con teclado. -->
+<div aria-label="Buscar" class="absolute right-0 top-0 mt-3 mr-4 cursor-pointer" id="search-button" role="button" tabindex="0">
+<svg class="text-gray-600 h-4 w-4 fill-current" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path></svg>
+</div>
+</div>
+<a class="ml-4 text-gray-600 hover:text-gray-800" href="#about">Sobre Nosotros</a>
+<a class="ml-4 text-gray-600 hover:text-gray-800" href="#cart">Carrito</a>
+</div>
+</div>
+</nav>
+<main class="container mx-auto p-4 md:p-8">
+<!-- Página de Inicio (Lista de Productos) -->
+<div class="page active" id="home">
+<h1 class="text-3xl font-bold mb-6">Nuestros Productos</h1>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" id="product-list">
+<!-- Los productos se insertarán aquí con JS -->
+</div>
+</div>
+<!-- Página de Detalles del Producto -->
+<div class="page" id="product-detail">
+<!-- El contenido se generará con JS -->
+</div>
+<!-- Página "Sobre Nosotros" -->
+<div class="page" id="about">
+<div class="bg-white rounded-lg shadow-lg p-8">
+<h1 class="text-3xl font-bold mb-4">Sobre BuggyMart</h1>
+<!-- ERROR INTENCIONAL: Texto de relleno y enlaces rotos/malformados -->
+<p class="text-gray-700 mb-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. <span class="text-red-500 font-bold">¡Esta sección está en construcción!</span></p>
+<p class="text-gray-700">Creemos en la calidad y el servicio al cliente. Contáctanos en nuestras redes:</p>
+<div class="mt-4">
+<a class="text-blue-500 hover:underline" href="http://twitter.invalid">Twitter</a> | 
+                    <a class="text-blue-500 hover:underline" href="mailto:info@buggymart.com">Email</a> |
+                    <a class="text-blue-500 hover:underline" href="tel:555-1234">Teléfono</a> <!-- NEW BUG: Phone number format is incorrect -->
+</div>
+</div>
+</div>
+</main>
+<div class="page" id="cart">
+<div class="bg-white rounded-lg shadow-lg p-6 md:p-8">
+<h1 class="text-3xl font-bold text-gray-800 mb-4">Carrito de Compras</h1>
+<div class="space-y-4" id="cart-items"></div>
+<div class="mt-6 text-right">
+<span class="text-2xl font-bold text-green-700">Total: <span id="cart-total">0,00€</span></span>
+</div>
+<div class="mt-4 text-right">
+<a class="text-blue-600 hover:underline" href="#home">Seguir Comprando</a>
+</div>
+</div>
+</div><footer class="text-center p-4 mt-8 rounded-b-lg">
+<!-- ERROR INTENCIONAL: El año está hardcodeado y el contraste es bajo -->
+<!-- NEW BUG: Copyright year is hardcoded and outdated -->
+<p>© 2023 BuggyMart. Todos los derechos reservados.</p>
+<p class="text-sm text-gray-500 mt-1">Versión 1.0</p> <!-- NEW BUG: Version number is static and misleading -->
+</footer>
+<script>
         const products = [
             { id: 1, name: 'Taza Inteligente', price: 25.99, image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR7vGTDFNOI5rBEOmveqyjjVHpJ1iqFyW7ZPJWQMmRkLQk_1xOJeVDxFyboRFJOd5LbLeg&usqp=CAU', description: 'Mantiene tu bebida a la temperatura ideal. Hecha con cerámica de alta calidad.' },
             { id: 2, name: 'Teclado Mecánico', price: 75.00, image: 'https://pe-media.hptiendaenlinea.com/wysiwyg/teclado_optico.png', description: 'Un teclado ruidoso y satisfactorio para programadores.' },
