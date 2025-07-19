@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inicio - BuggyMart</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50">
+  <nav class="bg-white shadow-md p-4 flex justify-between">
+    <a href="index.html" class="text-2xl font-bold text-gray-800">BuggyMart</a>
+    <a href="cart.html" class="text-blue-600">Carrito</a>
+  </nav>
+
+  <main class="container mx-auto p-6">
+    <h1 class="text-3xl font-bold mb-6">Nuestros Productos</h1>
+    <div id="product-list" class="grid grid-cols-1 md:grid-cols-3 gap-6"></div>
+  </main>
+
+  <script>
+    const products = [
+      { id: 1, name: 'Taza Inteligente', price: 25.99 },
+      { id: 2, name: 'Teclado Mecánico', price: 75.00 },
+      { id: 3, name: 'Mouse Inalámbrico', price: 30.50 }
+    ];
+
+    function addToCart(productId) {
+      const cart = JSON.parse(localStorage.getItem('cart')) || [];
+      const existing = cart.find(item => item.id === productId);
+      if (existing) {
+        existing.quantity++;
+      } else {
+        const product = products.find(p => p.id === productId);
+        cart.push({ ...product, quantity: 1 });
+      }
+      localStorage.setItem('cart', JSON.stringify(cart));
+      alert('Producto añadido al carrito');
+    }
+
+    function renderProducts() {
+      const container = document.getElementById('product-list');
+      products.forEach(p => {
+        const div = document.createElement('div');
+        div.className = 'bg-white p-4 rounded shadow';
+        div.innerHTML = `
+          <h2 class="text-xl font-semibold mb-2">${p.name}</h2>
+          <p class="mb-2">Precio: ${p.price.toFixed(2)}€</p>
+          <button onclick="addToCart(${p.id})" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Añadir al carrito</button>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    renderProducts();
+  </script>
+</body>
+</html>
